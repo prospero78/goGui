@@ -1,14 +1,16 @@
 # goGui
 
-_ru_
+**ru**
+
 Небольшая либа для создания графических интерфейсов (`GUI`) с помощью `Lorca` на `golang`.
 
 Использует в качестве поверхности рисования окно `Chrome`
 
 Должно работать на `Windos`, `Linux`, `MacOS`. Проверялось только на `Linux`
 
-- en \*
-  A small lib for creating graphical interfaces (`GUI`) with `Lorca` on `golang`.
+**en**
+
+A small lib for creating graphical interfaces (`GUI`) with `Lorca` on `golang`.
 
 Uses the `Chrome` window as the drawing surface
 
