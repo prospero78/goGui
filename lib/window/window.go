@@ -10,13 +10,15 @@ import (
 	"fmt"
 	"net/url"
 	"strings"
-	"sync"
 	"time"
 
 	"github.com/zserge/lorca"
 
+	"github.com/prospero78/goGui/lib/css"
 	"github.com/prospero78/goGui/lib/log"
 	"github.com/prospero78/goGui/lib/size"
+	"github.com/prospero78/goGui/lib/types"
+	"github.com/prospero78/goGui/lib/widget"
 )
 
 const (
@@ -26,6 +28,7 @@ const (
 	<HEAD>
 		<TITLE>{{title}}</TITLE>
 		<META CHARSET="UTF-8"/>
+		<STYLE>{{style}}</STYLE>
 	</HEAD>
 	<BODY>
 	</BODY>
@@ -34,65 +37,76 @@ const (
 	sizeUnfixed
 )
 
-var (
-	countWin = 0 // count for all window
-	block    sync.RWMutex
-)
-
 // TWindow -- operation with window
 type TWindow struct {
-	ui          lorca.UI         // User interface
-	numWin      int              // Number win
-	chTitle     chan string      //Chan for setting title window
-	chSize      chan *size.TSize // Chan for set size window
-	size        *size.TSize      // Size of window
-	chClose     chan int         // Chan for close window
-	chColorBg   chan string      // Set background color
-	chImageBg   chan string      // Set background image
-	chSizeFixed chan int         // Chan for set fixed/unfixed size window
-	log         *log.TLog        // Local log for out info, error , etc.
+	*widget.TWidget
+	ui          lorca.UI                          // User interface
+	chTitle     chan string                       //Chan for setting title window
+	chSize      chan *size.TSize                  // Chan for set size window
+	size        *size.TSize                       // Size of window
+	chClose     chan int                          // Chan for close window
+	chColorBg   chan string                       // Set background color
+	chImageBg   chan string                       // Set background image
+	chSizeFixed chan int                          // Chan for set fixed/unfixed size window
+	chWidgetAdd chan types.IWidget                // Chan for add widget in window
+	log         *log.TLog                         // Local log for out info, error , etc.
+	poolWidget  map[types.AWidgetID]types.IWidget //dictionary widgets in window
 }
 
 // NewWindow -- returns new *TWindow
 func NewWindow(title string) (window *TWindow) {
-	defer block.Unlock()
-	block.Lock()
-	countWin++
+	widget := widget.NewWidget(nil)
 	if title == "" {
-		title = fmt.Sprintf("win%v", countWin)
+		title = fmt.Sprintf("win%v", widget.GetWidgetID())
 	}
 	lg := log.NewLog()
-	lg.SetPrefix(fmt.Sprintf("%v TWindow.", title))
+	lg.SetPrefix(fmt.Sprintf("%v TWindow", title))
 	lg.SetLevel(log.DEBUG)
+
 	strPage := strings.ReplaceAll(page, "{{title}}", title)
+	strPage = strings.ReplaceAll(page, "{{style}}", css.GetBody())
+
 	ui, err := lorca.New("data:text/html,"+url.PathEscape(strPage), "", defaultSizeX, defaultSizeY)
 	if err != nil {
 		lg.Panicf("NewWindow(): PANIC in create window\n\t%v", err)
 	}
 
 	window = &TWindow{
+		TWidget:     widget,
 		ui:          ui,
-		numWin:      countWin,
 		chTitle:     make(chan string, 5),
 		chSize:      make(chan *size.TSize, 5),
 		chClose:     make(chan int, 5),
 		chColorBg:   make(chan string, 5),
 		chImageBg:   make(chan string, 5),
 		chSizeFixed: make(chan int, 5),
+		chWidgetAdd: make(chan types.IWidget, 5),
 		size:        size.NewSize(defaultSizeX, defaultSizeY),
 		log:         lg,
+		poolWidget:  make(map[types.AWidgetID]types.IWidget),
 	}
 	return window
+}
+
+// AddWidget -- add widget in internal space
+func (sf *TWindow) AddWidget(widget types.IWidget) {
+	if widget == nil {
+		sf.log.Errorf("AddWidget(): widget==nil\n")
+		return
+	}
+	sf.chWidgetAdd <- widget
 }
 
 // SetFixed -- set fixed size window
 func (sf *TWindow) SetFixed() {
 	sf.chSizeFixed <- sizeFixed
+	time.Sleep(time.Millisecond * 10)
 }
 
 // SetUnfixed -- set unfixed size window
 func (sf *TWindow) SetUnfixed() {
 	sf.chSizeFixed <- sizeUnfixed
+	time.Sleep(time.Millisecond * 10)
 }
 
 // SetColorBg -- set background color in window
@@ -159,6 +173,8 @@ func (sf *TWindow) Run() {
 			case sizeUnfixed:
 				sf.size.ResetFixed()
 			}
+		case widget := <-sf.chWidgetAdd: // Add widget in window
+			sf.poolWidget[widget.GetWidgetID()] = widget
 		}
 	}
 }

@@ -48,10 +48,10 @@ func (sf *TLog) SetLevel(level int) {
 func (sf *TLog) Infof(msg string, arg ...interface{}) {
 	if sf.level >= INFO {
 		if arg != nil {
-			fmt.Printf("INFO %v %v%v %+v\n", sf.getTime(), sf.prefix, msg, arg)
+			fmt.Printf("INFO %v %v.%v %+v\n", sf.getTime(), sf.prefix, msg, arg)
 			return
 		}
-		fmt.Printf("INFO %v %v%v\n", sf.getTime(), sf.prefix, msg)
+		fmt.Printf("INFO %v %v.%v\n", sf.getTime(), sf.prefix, msg)
 	}
 }
 
@@ -61,16 +61,17 @@ func (sf *TLog) Errorf(msg string, arg ...interface{}) {
 		fmt.Printf("ERRO %v %v%v %+v\n", sf.getTime(), sf.prefix, msg, arg)
 		return
 	}
-	fmt.Printf("ERRO %v %v%v\n", sf.getTime(), sf.prefix, msg)
+	fmt.Printf("ERRO %v %v.%v\n", sf.getTime(), sf.prefix, msg)
 }
 
 //Panicf -- out info message
 func (sf *TLog) Panicf(msg string, arg ...interface{}) {
 	if arg != nil {
-		fmt.Printf("PANI %v %v%v %+v\n", sf.getTime(), sf.prefix, msg, arg)
-		return
+		fmt.Printf("PANI %v %v.%v %+v\n", sf.getTime(), sf.prefix, msg, arg)
+		panic(nil)
 	}
-	fmt.Printf("PANI %v %v%v\n", sf.getTime(), sf.prefix, msg)
+	fmt.Printf("PANI %v %v.%v\n", sf.getTime(), sf.prefix, msg)
+	panic(nil)
 }
 
 // Return current time to out log

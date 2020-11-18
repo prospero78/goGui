@@ -70,7 +70,7 @@ func (sf *TSize) ResetFixed() {
 }
 
 // IsFixed - -return isFixed for this elements
-func (sf *TSize) IsFixed() bool{
+func (sf *TSize) IsFixed() bool {
 	defer sf.block.RUnlock()
 	sf.block.RLock()
 	return sf.isFixed

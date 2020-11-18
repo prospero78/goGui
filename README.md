@@ -24,7 +24,7 @@ Should work on `Windos`, `Linux`, `macOS`. Tested only on `Linux`
 go get github.com/prospero78/goGui/...
 ```
 
-Произойдёт скачивание всег опакета вместе с примерами (`./examples`) и графической библиотекой (`./lib`)
+Произойдёт скачивание всего пакета вместе с примерами (`./examples`) и графической библиотекой (`./lib`)
 
 ## Использование
 

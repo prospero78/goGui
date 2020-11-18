@@ -4,7 +4,7 @@ package lib
 	The library provides global objects. Customizes components as needed.
 */
 
-import(
+import (
 	"github.com/prospero78/goGui/lib/log"
 )
 
@@ -14,7 +14,7 @@ var (
 )
 
 // Initialization package at starttup
-func init(){
-	Log=log.NewLog()
+func init() {
+	Log = log.NewLog()
 	Log.SetLevel(log.DEBUG)
 }

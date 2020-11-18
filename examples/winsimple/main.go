@@ -8,6 +8,7 @@ import (
 	"time"
 
 	"github.com/prospero78/goGui/lib"
+	"github.com/prospero78/goGui/lib/frame"
 	"github.com/prospero78/goGui/lib/window"
 )
 
@@ -33,20 +34,22 @@ func main() {
 	win.SetSize(640, 480)
 	win.SetImageBg("https://img3.goodfon.ru/original/640x480/8/53/okean-more-voda-skaly-derevya.jpg")
 
-
 	time.Sleep(time.Second * 2)
-	win.SetTitle("4) Set fixed and set size")
+	win.SetTitle("5) Set fixed and set size")
 	win.SetFixed()
 	win.SetSize(640, 480)
 
 	time.Sleep(time.Second * 2)
-	win.SetTitle("4) Set unfixed and set size")
+	win.SetTitle("6) Set unfixed and change size")
 	win.SetUnfixed()
-	win.SetSize(645, 485)
+	win.SetSize(700, 500)
+
+	frmLeft := frame.NewFrame(win)
+	frmLeft.SetThickness(2)
 
 	time.Sleep(time.Second * 2)
 	log.Infof("Window is closed")
-	win.SetTitle("4) Close window")
+	win.SetTitle("7) Close window")
 	time.Sleep(time.Millisecond * 700)
 	win.Close()
 }
