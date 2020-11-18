@@ -1,6 +1,6 @@
 # goGui
 
-**ru**
+-- ru --
 
 Небольшая либа для создания графических интерфейсов (`GUI`) с помощью `Lorca` на `golang`.
 
@@ -8,7 +8,7 @@
 
 Должно работать на `Windos`, `Linux`, `MacOS`. Проверялось только на `Linux`
 
-**en**
+-- en --
 
 A small lib for creating graphical interfaces (`GUI`) with `Lorca` on `golang`.
 
@@ -50,4 +50,10 @@ func main(){
 }
 ```
 
-Дркгие примеры использования смотрите в папке `./examples`
+Другие примеры использования смотрите в папке `./examples`
+
+## Makefile
+
+```bash
+make win.sample // Простой пример создания окна и манипуляции его свойствами.
+```
