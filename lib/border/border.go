@@ -15,46 +15,56 @@ import (
 
 // TBorder -- thread save operation with border
 type TBorder struct {
-	left   *line.TLine
-	top    *line.TLine
-	right  *line.TLine
-	bottom *line.TLine
+	left   *line.TLineBorder
+	top    *line.TLineBorder
+	right  *line.TLineBorder
+	bottom *line.TLineBorder
 }
 
 // NewBorder -- return new *TBorder
-func NewBorder(color types.AColor, width types.AWidth, thickNess types.AThickness, lineStyle types.ALineStyle) (border *TBorder) {
+func NewBorder(color types.AColor, thickNess types.AThickness, lineStyle types.ALineStyle) (border *TBorder) {
 	return &TBorder{
-		left:   line.NewLine(width, thickNess, lineStyle, color),
-		top:    line.NewLine(width, thickNess, lineStyle, color),
-		right:  line.NewLine(width, thickNess, lineStyle, color),
-		bottom: line.NewLine(width, thickNess, lineStyle, color),
+		left:   line.NewLineBorder(thickNess, lineStyle, color, "border-left"),
+		top:    line.NewLineBorder(thickNess, lineStyle, color, "border-top"),
+		right:  line.NewLineBorder(thickNess, lineStyle, color, "border-right"),
+		bottom: line.NewLineBorder(thickNess, lineStyle, color, "boreder-bottom"),
 	}
 }
 
 // Left -- return left line
-func (sf *TBorder) Left() *line.TLine {
+func (sf *TBorder) Left() *line.TLineBorder {
 	return sf.left
 }
 
 // Top -- return top line
-func (sf *TBorder) Top() *line.TLine {
+func (sf *TBorder) Top() *line.TLineBorder {
 	return sf.top
 }
 
 // Right -- return right line
-func (sf *TBorder) Right() *line.TLine {
+func (sf *TBorder) Right() *line.TLineBorder {
 	return sf.right
 }
 
 // Bottom -- return bottom line
-func (sf *TBorder) Bottom() *line.TLine {
+func (sf *TBorder) Bottom() *line.TLineBorder {
 	return sf.bottom
 }
 
 // SetThickness -- set thickness to all lines in border
 func (sf *TBorder) SetThickness(thickNes types.AThickness) {
-	sf.left.SetTihickness(thickNes)
-	sf.top.SetTihickness(thickNes)
-	sf.right.SetTihickness(thickNes)
-	sf.bottom.SetTihickness(thickNes)
+	sf.left.SetThickness(thickNes)
+	sf.top.SetThickness(thickNes)
+	sf.right.SetThickness(thickNes)
+	sf.bottom.SetThickness(thickNes)
+}
+
+// String -- возвращает строковое представление бордюра (реализация интерфейса)
+func (sf *TBorder) String() map[string]map[string]string {
+	res := make(map[string]map[string]string)
+	res["borderLeft"]=sf.left.GetStyle()
+	res["borderRight"]=sf.right.GetStyle()
+	res["borderTop"]=sf.top.GetStyle()
+	res["borderBottom"]=sf.bottom.GetStyle()
+	return res
 }

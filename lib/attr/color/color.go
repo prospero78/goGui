@@ -36,3 +36,10 @@ func (sf *TColor) SetColor(color types.AColor) {
 	sf.block.Lock()
 	sf.val = color
 }
+
+// String -- return string represent color (realise interface)
+func (sf *TColor) String() string {
+	defer sf.block.RUnlock()
+	sf.block.RLock()
+	return string(sf.val)
+}

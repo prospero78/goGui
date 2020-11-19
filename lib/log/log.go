@@ -55,6 +55,17 @@ func (sf *TLog) Infof(msg string, arg ...interface{}) {
 	}
 }
 
+//Debugf -- out debug message
+func (sf *TLog) Debugf(msg string, arg ...interface{}) {
+	if sf.level >= DEBUG {
+		if arg != nil {
+			fmt.Printf("DEBU %v %v.%v %+v\n", sf.getTime(), sf.prefix, msg, arg)
+			return
+		}
+		fmt.Printf("DEBU %v %v.%v\n", sf.getTime(), sf.prefix, msg)
+	}
+}
+
 //Errorf -- out error message
 func (sf *TLog) Errorf(msg string, arg ...interface{}) {
 	if arg != nil {

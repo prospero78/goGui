@@ -174,7 +174,30 @@ func (sf *TWindow) Run() {
 				sf.size.ResetFixed()
 			}
 		case widget := <-sf.chWidgetAdd: // Add widget in window
-			sf.poolWidget[widget.GetWidgetID()] = widget
+			sf.addWidget(widget)
 		}
+	}
+}
+
+func (sf *TWindow) addWidget(widget types.IWidget) {
+	sf.poolWidget[widget.GetWidgetID()] = widget
+	strID := fmt.Sprint(widget.GetWidgetID())
+	sf.ui.Eval(`
+			let div = document.createElement('DIV');
+			div.id = '` + strID + `';
+			document.body.append(div);`)
+	style := widget.GetStyle()
+	for side, st := range style {
+		color := st["Color"]
+		cmd:=`document.getElementById('` + strID + `').style.` + side + `Color='` + color + `';`
+		sf.ui.Eval(cmd)
+
+		width := st["Width"]
+		cmd=`document.getElementById('` + strID + `').style.` + side + `Width='` + width + `';`
+		sf.ui.Eval(cmd)
+
+		style := st["Style"]
+		cmd=`document.getElementById('` + strID + `').style.` + side + `Style='` + style + `';`
+		sf.ui.Eval(cmd)
 	}
 }

@@ -26,12 +26,20 @@ type ALineStyle string
 // AHtml -- ad hoc types for HTML-represent elements
 type AHtml string
 
+// ALineType -- ad hoc types for HTML-represent thickness line elements
+type ALineType string
+
+// AStyle -- ad hoc types for HTML-represent style elements
+type AStyle map[string]map[string]string
+
 // IWidget -- универсальный интерфейс для всех виджетов.
 type IWidget interface {
 	// GetWidgetID -- возвращает ID виджета
 	GetWidgetID() AWidgetID
 	// GetHTML -- возвращает HTML-представление виджета
 	GetHTML() AHtml
+	// GetStyle -- возвращает HTML-представление стиля
+	GetStyle() AStyle
 }
 
 // IParent -- универсальный интерфейс предка

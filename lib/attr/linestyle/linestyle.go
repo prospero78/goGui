@@ -58,7 +58,7 @@ func (sf *TLineStyle) SetLineStyle(style types.ALineStyle) {
 	case None, Hidden, Dotted, Dashed, Solid, Double, Groove, Ridge, Inset, Outset, Inherit:
 	default:
 		lib.Log.Errorf("TLineStyle.SetLineStyle(): unknown line style(%v)\n", style)
-		style = Inherit
+		style = Double
 	}
 	sf.val = style
 }
@@ -68,4 +68,11 @@ func (sf *TLineStyle) GetLineStyle() types.ALineStyle {
 	defer sf.block.RUnlock()
 	sf.block.RLock()
 	return sf.val
+}
+
+// String -- возвращает строковое представление стиля (реализация интерфейса)
+func (sf *TLineStyle) String() string {
+	defer sf.block.RUnlock()
+	sf.block.RLock()
+	return string(sf.val)
 }

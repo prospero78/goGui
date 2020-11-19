@@ -44,12 +44,14 @@ func main() {
 	win.SetUnfixed()
 	win.SetSize(700, 500)
 
+	win.SetTitle("7) Add frame")
 	frmLeft := frame.NewFrame(win)
 	frmLeft.SetThickness(2)
+	time.Sleep(time.Second * 5000)
 
 	time.Sleep(time.Second * 2)
 	log.Infof("Window is closed")
-	win.SetTitle("7) Close window")
+	win.SetTitle("8) Close window")
 	time.Sleep(time.Millisecond * 700)
 	win.Close()
 }

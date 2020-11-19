@@ -5,6 +5,7 @@ package thickness
 */
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/prospero78/goGui/lib/types"
@@ -35,4 +36,12 @@ func (sf *TThickness) GetThickness() types.AThickness {
 	defer sf.block.RUnlock()
 	sf.block.RLock()
 	return sf.val
+}
+
+// String -- возвращает толщину линии (реализация интерфейса)
+//Поскольку мы не знаем .к чему относится толщина -- атрибут не преедаём.
+func (sf *TThickness) String() string {
+	defer sf.block.RUnlock()
+	sf.block.RLock()
+	return fmt.Sprint(sf.val)
 }

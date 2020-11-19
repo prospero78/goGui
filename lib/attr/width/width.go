@@ -5,6 +5,7 @@ package width
 */
 
 import (
+	"fmt"
 	"sync"
 
 	"github.com/prospero78/goGui/lib/types"
@@ -35,4 +36,11 @@ func (sf *TWidth) GetWidth() types.AWidth {
 	defer sf.block.RUnlock()
 	sf.block.RLock()
 	return sf.val
+}
+
+// String -- возвращает строковое представление ширины
+func (sf *TWidth) String() string {
+	defer sf.block.RUnlock()
+	sf.block.RLock()
+	return fmt.Sprint(sf.val)
 }

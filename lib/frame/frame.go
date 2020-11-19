@@ -34,7 +34,7 @@ func NewFrame(parent types.IParent) (frame *TFrame) {
 	}
 	frame = &TFrame{
 		TWidget: widget.NewWidget(parent),
-		border:  border.NewBorder("#404040", 3, 2, linestyle.Inherit),
+		border:  border.NewBorder("#404040", 2, linestyle.Double),
 	}
 	return frame
 }
@@ -53,6 +53,11 @@ func (sf *TFrame) SetThickness(thickNes types.AThickness) {
 
 // GetHTML -- return HTML-represent TFrame
 func (sf *TFrame) GetHTML() types.AHtml {
-	strRes := `<DIV style="">{{children}}</DIV>`
+	strRes := `<DIV style='`// + sf.border.String() + `'></DIV>`
 	return types.AHtml(strRes)
+}
+
+// GetStyle - -retur nstyle for DIV
+func (sf *TFrame)GetStyle()types.AStyle{
+	return types.AStyle(sf.border.String())
 }
